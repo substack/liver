@@ -1,16 +1,17 @@
-var fs = require('fs');
 var http = require('http');
-var render = require('./render.js');
 var through = require('through');
+var browserify = require('browserify');
 
 var liver = require('../../');
 var level = require('level');
 var db = level('/tmp/simplest.db', { encoding: 'json' });
 db.batch(require('./data.json'));
 
+var render = require('./render.js');
+
 var server = http.createServer(function (req, res) {
     if (req.url === '/bundle.js') {
-        return fs.createReadStream(__dirname + '/bundle.js').pipe(res);
+        return browserify('browser.js').bundle().pipe(res);
     }
     var params = { start: 'cat!', end: 'cat!\uffff' };
     res.write('<html><body>'
