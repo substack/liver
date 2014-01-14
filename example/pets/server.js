@@ -3,7 +3,7 @@ var fs = require('fs');
 var ecstatic = require('ecstatic')(__dirname + '/static');
 var hyperstream = require('hyperstream');
 
-var liver = require('../');
+var liver = require('../../');
 var level = require('level');
 var db = level('/tmp/liver.db', { encoding: 'json' });
 require('./populate.js')(db);
