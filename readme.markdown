@@ -120,6 +120,10 @@ The API is the same as
 [leveldown](https://npmjs.org/package/leveldown) thanks to
 [multilevel](https://npmjs.org/package/multilevel).
 
+Check out the [lists/ example](example/lists) for an example of using
+[hyperstream](https://npmjs.org/package/hyperstream) to handle the shared
+rendering in a different way.
+
 # methods
 
 ``` js
