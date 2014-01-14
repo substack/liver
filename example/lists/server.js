@@ -14,24 +14,19 @@ var server = http.createServer(function (req, res) {
     if (!m) return ecstatic(req, res);
     
     var name = m[1] || 'default';
-    var items = db.createReadStream({
-        start: 'item!' + name + '!',
-        end: 'item!' + name + '!\uffff'
-    });
-    var hs = hyperstream({
+    var items = db.createReadStream({ start: name + '!', end: name + '!\uffff' });
+    
+    fs.createReadStream(__dirname + '/html/index.html').pipe(hyperstream({
         '#name': name,
         '#list': {
             _html: items.pipe(render()),
             'data-start': items._options.start,
             'data-end': items._options.end
         }
-    });
-    fs.createReadStream(__dirname + '/html/index.html').pipe(hs).pipe(res);
+    })).pipe(res);
 });
 server.listen(5000);
 
 var shoe = require('shoe');
-var sock = shoe(function (stream) {
-    stream.pipe(liver(db)).pipe(stream);
-});
+var sock = shoe(function (stream) { stream.pipe(liver(db)).pipe(stream) });
 sock.install(server, '/sock');
