@@ -3,9 +3,10 @@ var fs = require('fs');
 var ecstatic = require('ecstatic')(__dirname + '/static');
 var hyperstream = require('hyperstream');
 
+var liver = require('../');
 var level = require('level');
 var db = level('/tmp/liver.db', { encoding: 'json' });
-var liver = require('../')(db);
+require('./populate.js')(db);
 
 var bulk = require('bulk-require');
 var parts = bulk(__dirname + '/parts', [ [ '*/data.js', db ], '*/*.js' ]);
@@ -28,7 +29,7 @@ server.listen(5000);
 
 var shoe = require('shoe');
 var sock = shoe(function (stream) {
-    stream.pipe(liver.createStream()).pipe(stream);
+    stream.pipe(liver(db)).pipe(stream);
 });
 sock.install(server, '/sock');
 

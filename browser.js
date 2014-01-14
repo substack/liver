@@ -29,7 +29,20 @@ function Liver (root) {
                 self.emit('element', xs[j].element);
             }
         }
+        for (var i = 0; i < self.feeds.length; i++) {
+            self.emit('feed', self.feeds[i]);
+        }
     });
+    
+    this.feeds = [];
+    for (var i = 0; i < this.ranges.length; i++) {
+        var r = this.ranges[i];
+        var feed = this.db.livefeed({ start: r.start, end: r.end });
+        feed.start = r.start;
+        feed.end = r.end;
+        feed.element = r.element;
+        this.feeds.push(feed);
+    }
 }
 
 Liver.prototype.get = function () { this.db.get.apply(this.db, arguments) };
@@ -37,12 +50,16 @@ Liver.prototype.put = function () { this.db.put.apply(this.db, arguments) };
 Liver.prototype.del = function () { this.db.del.apply(this.db, arguments) };
 Liver.prototype.batch = function () { this.db.batch.apply(this.db, arguments) };
 
-Liver.prototype._read = function (n) {
-    this.rpc._read(n);
+Liver.prototype._read = function () {
+    var chunk;
+    while ((chunk = this.rpc.read()) !== null) {
+        this.push(chunk);
+    }
 };
 
 Liver.prototype._write = function (buf, enc, next) {
-    this.rpc._write(buf, enc, next);
+    this.rpc.write(buf);
+    next();
 };
 
 function scanRanges (root) {

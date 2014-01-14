@@ -1,7 +1,10 @@
-var level = require('level');
-var db = level('/tmp/liver.db', { encoding: 'json' });
+var names = [ 'Whiskers', 'Athena', 'Sir Theodore Tibblesworth', 'Rex' ];
+function keyOf (name) { return name.toLowerCase().replace(/\W+/g, '-') }
 
-db.put('cat!whiskers', { name: 'Whiskers', lives: 6 });
-db.put('cat!athena', { name: '', lives: 9 });
-db.put('cat!sir-theodore-tibblesworth', { name: 'Sir Theodore Tibblesworth', lives: 2 });
-db.put('cat!rex', { name: 'Rex', lives: 5 });
+module.exports = function (db) {
+    setInterval(function () {
+        var lives = Math.floor(Math.random() * 9 + 1);
+        var name = names[Math.floor(Math.random() * names.length)];
+        db.put('cat!' + keyOf(name), { name: name, lives: lives });
+    }, 1000);
+};
