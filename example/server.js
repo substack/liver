@@ -3,18 +3,24 @@ var fs = require('fs');
 var ecstatic = require('ecstatic')(__dirname + '/static');
 var hyperstream = require('hyperstream');
 
-var multilevel = require('multilevel');
 var level = require('level');
 var db = level('/tmp/liver.db', { encoding: 'json' });
+var liver = require('../')(db);
 
 var bulk = require('bulk-require');
 var parts = bulk(__dirname + '/parts', [ [ '*/data.js', db ], '*/*.js' ]);
 
 var server = http.createServer(function (req, res) {
     if (req.url === '/') {
-        readStream('index.html').pipe(hyperstream({
-            '#content': parts.cats.data.list().pipe(parts.cats.render())
-        })).pipe(res);
+        var ls = parts.cats.data.list();
+        var hs = hyperstream({
+            '#content': {
+                _html: ls.pipe(parts.cats.render()),
+                'data-start': ls._options.start,
+                'data-end': ls._options.end
+            }
+        });
+        readStream('index.html').pipe(hs).pipe(res);
     }
     else ecstatic(req, res);
 });
@@ -22,7 +28,7 @@ server.listen(5000);
 
 var shoe = require('shoe');
 var sock = shoe(function (stream) {
-    stream.pipe(multilevel.server(db)).pipe(stream);
+    stream.pipe(liver.createStream()).pipe(stream);
 });
 sock.install(server, '/sock');
 

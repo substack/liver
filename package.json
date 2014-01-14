@@ -1,0 +1,39 @@
+{
+  "name": "liver",
+  "version": "0.0.0",
+  "description": "update page markup when the database changes",
+  "main": "index.js",
+  "browser": "browser.js",
+  "dependencies": {
+    "level-live-stream": "~1.4.9",
+    "multilevel": "~5.5.0",
+    "inherits": "~2.0.1"
+  },
+  "devDependencies": {
+    "tape": "~2.3.2"
+  },
+  "scripts": {
+    "test": "tape test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/substack/liver.git"
+  },
+  "homepage": "https://github.com/substack/liver",
+  "keywords": [
+    "live",
+    "page",
+    "update",
+    "template",
+    "collection",
+    "data",
+    "model",
+    "sync"
+  ],
+  "author": {
+    "name": "James Halliday",
+    "email": "mail@substack.net",
+    "url": "http://substack.net"
+  },
+  "license": "MIT"
+}
