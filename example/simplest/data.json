@@ -1,0 +1,4 @@
+[{"type":"put","key":"cat!mr-whiskers","value":{"name":"Mr. Whiskers"}},
+{"type":"put","key":"cat!athena","value":{"name":"Athena"}},
+{"type":"put","key":"cat!sir-tibbles","value":{"name":"Sir Tibbles"}},
+{"type":"put","key":"cat!rex","value":{"name":"Rex"}}]

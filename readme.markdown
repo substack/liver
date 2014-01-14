@@ -4,7 +4,9 @@ update page markup when the database changes
 
 # example
 
-server code:
+All you need to do is render
+
+Here is a simple server that will 
 
 ``` js
 ```

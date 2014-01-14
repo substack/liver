@@ -44,6 +44,9 @@ function Liver (root) {
         feed.start = r.start;
         feed.end = r.end;
         feed.element = r.element;
+        feed.query = function (key) {
+            return feed.element.querySelector('*[data-key="' + key + '"]');
+        };
         this.feeds.push(feed);
     }
 }
