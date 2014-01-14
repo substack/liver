@@ -17,6 +17,9 @@ function Liver (root) {
     this.db = multilevel.client(manifest);
     this.rpc = this.db.createRpcStream();
     if (!this.rpc._read) this.rpc = new Readable().wrap(this.rpc);
+    this.rpc.on('finish', function () {
+        self.push(null);
+    });
     
     this.ranges = scanRanges(root);
     this.keys = scanKeys(root);
@@ -51,10 +54,15 @@ Liver.prototype.del = function () { this.db.del.apply(this.db, arguments) };
 Liver.prototype.batch = function () { this.db.batch.apply(this.db, arguments) };
 
 Liver.prototype._read = function () {
-    var chunk;
+    var self = this;
+    var chunk, times = 0;
     while ((chunk = this.rpc.read()) !== null) {
         this.push(chunk);
+        times ++;
     }
+    if (times === 0) this.rpc.once('readable', function () {
+        self._read();
+    });
 };
 
 Liver.prototype._write = function (buf, enc, next) {
