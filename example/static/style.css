@@ -1,5 +1,11 @@
-#content {
+.cat {
   padding: 20px;
-  background-color: rgb(240,240,245);
+  background-color: rgb(220,220,235);
   border-radius: 5px;
+  margin-bottom: 5px;
+}
+
+.row .key, .row .value {
+  display: inline-block;
+  min-width: 75px;
 }

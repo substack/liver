@@ -79,19 +79,10 @@ function scanRanges (root) {
         var start = elem.getAttribute('data-start');
         var end = elem.getAttribute('data-end');
         
-        var keyList = elem.querySelectorAll('*[data-key]');
-        var ks = [];
-        for (var i = 0; i < keyList.length; i++) {
-            var elem = keyList[i];
-            var key = elem.getAttribute('data-key');
-            ks.push({ element: key });
-        }
-        
         ranges.push({
             element: elem,
             start: start,
-            end: end,
-            keys: ks
+            end: end
         });
     }
     return ranges;
