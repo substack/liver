@@ -1,7 +1,7 @@
 {
   "name": "liver",
   "version": "0.0.0",
-  "description": "update page markup when the database changes",
+  "description": "update page markup when a leveldb database changes",
   "main": "index.js",
   "browser": "browser.js",
   "dependencies": {
