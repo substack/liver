@@ -7,12 +7,17 @@ var manifest = require('./manifest.json');
 module.exports = Liver;
 inherits(Liver, Duplex);
 
-function Liver (root) {
-    if (!(this instanceof Liver)) return new Liver(root);
+function Liver (root, cb) {
+    if (!(this instanceof Liver)) return new Liver(root, cb);
     var self = this;
     Duplex.call(this);
     
+    if (typeof root === 'function') {
+        cb = root;
+        root = undefined;
+    }
     if (!root) root = document;
+    if (cb) this.on('feed', cb);
     
     this.db = multilevel.client(manifest);
     this.rpc = this.db.createRpcStream();
