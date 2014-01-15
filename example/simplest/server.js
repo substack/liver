@@ -11,7 +11,7 @@ var render = require('./render.js');
 
 var server = http.createServer(function (req, res) {
     if (req.url === '/bundle.js') {
-        return browserify('browser.js').bundle().pipe(res);
+        return browserify('./browser.js').bundle().pipe(res);
     }
     var params = { start: 'cat!', end: 'cat!\uffff' };
     res.write('<html><body>'

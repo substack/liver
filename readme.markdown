@@ -77,8 +77,7 @@ var liver = require('liver');
 var shoe = require('shoe');
 var render = require('./render.js');
 
-var live = liver();
-live.on('feed', function (feed) {
+var live = liver(function (feed) {
     feed.on('data', function (row) {
         var ex = feed.query(row.key);
         if (ex) feed.element.removeChild(ex);
@@ -146,11 +145,13 @@ functions.
 
 ## browser mthods
 
-### var live = liver(rootElement)
+### var live = liver(rootElement=document, cb)
 
 The `rootElement` specifies where elements with `data-start` and `data-end`
 attributes will be searched for. `rootElement` defaults to `document` if not
 provided.
+
+If `cb(feed)` is given, it will be set up as a listener on the `'feed'` event.
 
 ### live.get(), live.put(), live.del(), live.createReadStream()
 
